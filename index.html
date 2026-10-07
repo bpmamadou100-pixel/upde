@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plateforme UPDe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="brand">
+      <div class="logo">UPDe</div>
+      <div>
+        <h1>Plateforme pédagogique UPDe</h1>
+        <p>L1 / L2 — cours, TD, corrections, examens et fiches résumé</p>
+      </div>
+    </div>
+    <div class="hero-badge">Cours donné par Mr Fall</div>
+  </header>
+
+  <main>
+    <section id="login" class="card login-card">
+      <div class="tabs">
+        <button class="tab active" onclick="showAuth('loginBox', this)">Connexion</button>
+        <button class="tab" onclick="showAuth('registerBox', this)">Inscription étudiant</button>
+      </div>
+
+      <div id="loginBox">
+        <h2>Connexion</h2>
+        <p class="hint">Professeur : prof@upde.sn / UPDe2026!</p>
+        <p class="hint">Étudiant : etudiant@upde.sn / etudiant123</p>
+        <label>Email</label>
+        <input id="email" type="email" placeholder="exemple@upde.sn">
+        <label>Mot de passe</label>
+        <input id="password" type="password" placeholder="Mot de passe">
+        <button onclick="login()">Se connecter</button>
+        <p id="loginMsg" class="msg"></p>
+      </div>
+
+      <div id="registerBox" class="hidden">
+        <h2>Créer un compte étudiant</h2>
+        <label>Nom complet</label>
+        <input id="regName" placeholder="Nom et prénom">
+        <label>Email</label>
+        <input id="regEmail" type="email" placeholder="email@exemple.com">
+        <label>Niveau</label>
+        <select id="regLevel"><option>L1</option><option>L2</option></select>
+        <label>Mot de passe</label>
+        <input id="regPassword" type="password" placeholder="6 caractères minimum">
+        <button onclick="registerStudent()">Créer mon compte</button>
+        <p id="regMsg" class="msg"></p>
+      </div>
+    </section>
+
+    <section id="app" class="hidden">
+      <div class="topbar card">
+        <div>
+          <h2 id="welcome"></h2>
+          <p id="roleText"></p>
+        </div>
+        <div class="top-actions">
+          <button class="secondary" onclick="toggleBox('passwordBox')">Changer mot de passe</button>
+          <button class="secondary" onclick="logout()">Déconnexion</button>
+        </div>
+      </div>
+
+      <section id="passwordBox" class="card hidden">
+        <h2>Changer le mot de passe</h2>
+        <div class="form-grid-3">
+          <input id="oldPassword" type="password" placeholder="Ancien mot de passe">
+          <input id="newPassword" type="password" placeholder="Nouveau mot de passe">
+          <button onclick="changePassword()">Modifier</button>
+        </div>
+        <p id="passwordMsg" class="msg"></p>
+      </section>
+
+      <section class="dashboard">
+        <div class="stat-card"><span id="statDocs">0</span><small>Documents</small></div>
+        <div class="stat-card"><span id="statStudents">0</span><small>Étudiants</small></div>
+        <div class="stat-card"><span id="statL1">0</span><small>Documents L1</small></div>
+        <div class="stat-card"><span id="statL2">0</span><small>Documents L2</small></div>
+      </section>
+
+      <section class="levels card">
+        <h2>Organisation des matières</h2>
+        <div class="level-grid">
+          <div class="level-card"><h3>L1</h3><p>Analyse, Algèbre, ISE, Programmation, Algorithme, Architecture, Mécanique</p></div>
+          <div class="level-card"><h3>L2</h3><p>Analyse, Algèbre, SD, PSE, Électromagnétique, TEC</p></div>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card" id="adminBox">
+          <h2>Ajouter un document PDF</h2>
+          <form id="uploadForm">
+            <label>Titre</label>
+            <input name="title" required placeholder="Ex : TD corrigé Architecture L1">
+            <div class="form-grid-3">
+              <div><label>Niveau</label><select name="level" required onchange="updateSubjectSelect(this.form.querySelector('select[name=subject]'), this.value)"></select></div>
+              <div><label>Matière</label><select name="subject" required></select></div>
+              <div><label>Catégorie</label><select name="category" required></select></div>
+            </div>
+            <label>Fichier PDF</label>
+            <input name="pdf" type="file" accept="application/pdf" required>
+            <button type="submit">Publier</button>
+          </form>
+          <p id="uploadMsg" class="msg"></p>
+        </section>
+
+        <section class="card">
+          <h2>Documents disponibles</h2>
+          <div class="filters">
+            <input id="searchInput" placeholder="Rechercher un cours, TD, examen..." oninput="loadDocuments()">
+            <select id="filterLevel" onchange="onFilterLevelChange()"></select>
+            <select id="filterSubject" onchange="loadDocuments()"></select>
+            <select id="filterCategory" onchange="loadDocuments()"></select>
+          </div>
+          <div id="documents"></div>
+        </section>
+      </div>
+
+      <section id="studentBox" class="card hidden">
+        <h2>Liste des étudiants</h2>
+        <div id="students"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
